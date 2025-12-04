@@ -1,0 +1,204 @@
+name: Build and Release APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+      
+    - name: Copy template config
+      run: |
+        cp app/src/main/res/raw/test_station_config_template.json app/src/main/res/raw/test_station_config.json
+        
+    - name: Calculate next version
+      id: version
+      run: |
+        # Get the latest tag
+        latest_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+        echo "Latest tag: $latest_tag"
+        
+        # Remove 'v' prefix if present
+        version=${latest_tag#v}
+        
+        # Parse version parts
+        IFS='.' read -r major minor patch <<< "$version"
+        
+        # Default to 1.0.0 if no tags exist
+        if [ -z "$major" ] || [ "$major" = "0" ]; then
+          major=1
+          minor=0
+          patch=0
+        fi
+        
+        # Increment version: 1.0.0 -> 1.0.1 -> ... -> 1.0.9 -> 1.1.0
+        if [ "$patch" -lt 9 ]; then
+          patch=$((patch + 1))
+        else
+          patch=0
+          minor=$((minor + 1))
+        fi
+        
+        new_version="$major.$minor.$patch"
+        new_tag="v$new_version"
+        
+        echo "New version: $new_version"
+        echo "New tag: $new_tag"
+        echo "version=$new_version" >> $GITHUB_OUTPUT
+        echo "tag=$new_tag" >> $GITHUB_OUTPUT
+        echo "version_code=$((major * 10000 + minor * 100 + patch))" >> $GITHUB_OUTPUT
+        
+    - name: Update version in build.gradle
+      run: |
+        version="${{ steps.version.outputs.version }}"
+        version_code="${{ steps.version.outputs.version_code }}"
+        
+        # Update versionName
+        sed -i "s/versionName \".*\"/versionName \"$version\"/" app/build.gradle
+        
+        # Update versionCode
+        sed -i "s/versionCode [0-9]*/versionCode $version_code/" app/build.gradle
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Setup Gradle wrapper
+      run: |
+        # Get Gradle version from properties
+        GRADLE_VERSION=$(grep distributionUrl gradle/wrapper/gradle-wrapper.properties | sed 's/.*gradle-\([0-9.]*\)-.*/\1/')
+        echo "Gradle version: $GRADLE_VERSION"
+        
+        mkdir -p gradle/wrapper
+        
+        # Check if wrapper jar already exists and is valid
+        if [ -f "gradle/wrapper/gradle-wrapper.jar" ] && [ -s "gradle/wrapper/gradle-wrapper.jar" ]; then
+          if unzip -t gradle/wrapper/gradle-wrapper.jar > /dev/null 2>&1; then
+            echo "Gradle wrapper jar already exists and is valid"
+            exit 0
+          fi
+        fi
+        
+        # Generate wrapper using gradle wrapper task (most reliable method)
+        echo "Generating Gradle wrapper using gradle wrapper task..."
+        
+        # Download and install gradle to generate wrapper
+        GRADLE_ZIP="gradle-${GRADLE_VERSION}-bin.zip"
+        echo "Downloading Gradle ${GRADLE_VERSION} distribution..."
+        curl -L "https://services.gradle.org/distributions/${GRADLE_ZIP}" -o /tmp/${GRADLE_ZIP}
+        
+        if [ ! -f "/tmp/${GRADLE_ZIP}" ]; then
+          echo "Error: Failed to download Gradle distribution"
+          exit 1
+        fi
+        
+        echo "Extracting Gradle..."
+        unzip -q /tmp/${GRADLE_ZIP} -d /tmp
+        export PATH="/tmp/gradle-${GRADLE_VERSION}/bin:$PATH"
+        
+        # Generate wrapper using gradle
+        echo "Generating wrapper jar..."
+        gradle wrapper --gradle-version "$GRADLE_VERSION" --distribution-type bin
+        
+        # Verify the generated file
+        if [ ! -f "gradle/wrapper/gradle-wrapper.jar" ] || [ ! -s "gradle/wrapper/gradle-wrapper.jar" ]; then
+          echo "Error: Failed to generate gradle-wrapper.jar"
+          exit 1
+        fi
+        
+        if ! unzip -t gradle/wrapper/gradle-wrapper.jar > /dev/null 2>&1; then
+          echo "Error: Generated gradle-wrapper.jar is corrupted"
+          exit 1
+        fi
+        
+        FILE_SIZE=$(stat -f%z gradle/wrapper/gradle-wrapper.jar 2>/dev/null || stat -c%s gradle/wrapper/gradle-wrapper.jar 2>/dev/null || echo "0")
+        echo "Gradle wrapper jar generated successfully (size: $FILE_SIZE bytes)"
+      
+    - name: Setup Keystore
+      env:
+        MYAPP_RELEASE_STORE_FILE: ${{ secrets.MYAPP_RELEASE_STORE_FILE }}
+        MYAPP_RELEASE_STORE_PASSWORD: ${{ secrets.MYAPP_RELEASE_STORE_PASSWORD }}
+        MYAPP_RELEASE_KEY_ALIAS: ${{ secrets.MYAPP_RELEASE_KEY_ALIAS }}
+        MYAPP_RELEASE_KEY_PASSWORD: ${{ secrets.MYAPP_RELEASE_KEY_PASSWORD }}
+      run: |
+        if [ -z "$MYAPP_RELEASE_STORE_FILE" ] || [ "$MYAPP_RELEASE_STORE_FILE" == "" ]; then
+          echo "Keystore secret not found, skipping keystore setup"
+          exit 0
+        fi
+        echo "$MYAPP_RELEASE_STORE_FILE" | base64 -d > app/keystore.jks
+        echo "storeFile=keystore.jks" > app/keystore.properties
+        echo "storePassword=$MYAPP_RELEASE_STORE_PASSWORD" >> app/keystore.properties
+        echo "keyAlias=$MYAPP_RELEASE_KEY_ALIAS" >> app/keystore.properties
+        echo "keyPassword=$MYAPP_RELEASE_KEY_PASSWORD" >> app/keystore.properties
+        
+    - name: Build release APK
+      run: ./gradlew assembleRelease
+      
+    - name: Rename APK
+      id: rename_apk
+      run: |
+        ORIGINAL_APK=$(find app/build/outputs/apk/release -name "app-release.apk" | head -1)
+        if [ -z "$ORIGINAL_APK" ]; then
+          echo "APK file not found!"
+          exit 1
+        fi
+        VERSION="${{ steps.version.outputs.version }}"
+        VERSION_CODE="${{ steps.version.outputs.version_code }}"
+        NEW_NAME="Power Plant Analyser-release-v${VERSION}-${VERSION_CODE}.apk"
+        NEW_APK="app/build/outputs/apk/release/${NEW_NAME}"
+        cp "$ORIGINAL_APK" "$NEW_APK"
+        echo "APK_FILE=$NEW_APK" >> $GITHUB_OUTPUT
+        echo "Renamed APK to: $NEW_NAME"
+        
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release-${{ steps.version.outputs.tag }}
+        path: ${{ steps.rename_apk.outputs.APK_FILE }}
+        retention-days: 30
+        
+    - name: Create Git Tag
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
+        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        git push origin "${{ steps.version.outputs.tag }}"
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.rename_apk.outputs.APK_FILE }}
+        tag_name: ${{ steps.version.outputs.tag }}
+        name: Release ${{ steps.version.outputs.tag }}
+        body: |
+          ## Release ${{ steps.version.outputs.tag }}
+          
+          Automated release with version ${{ steps.version.outputs.version }}
+          
+          **Version Code:** ${{ steps.version.outputs.version_code }}
+          **Version Name:** ${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

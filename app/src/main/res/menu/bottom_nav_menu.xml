@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/nav_settings" />
+
+    <item
+        android:id="@+id/navigation_project"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="@string/nav_project" />
+
+    <item
+        android:id="@+id/navigation_analysis"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="@string/nav_analysis" />
+
+    <item
+        android:id="@+id/navigation_weather"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/nav_weather" />
+
+</menu>

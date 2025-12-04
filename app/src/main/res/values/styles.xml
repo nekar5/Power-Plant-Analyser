@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text appearances -->
+    <style name="TextAppearance.App.Headline1" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline2" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Headline3" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle1" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Subtitle2" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Body1" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Body2" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+
+    <!-- Input styles -->
+    <style name="Widget.App.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">@color/text_input_dark</item>
+        <item name="android:textColorHint">@color/text_hint_dark</item>
+        <item name="android:background">@color/input_background_dark</item>
+    </style>
+
+    <!-- TextView styles -->
+    <style name="Widget.App.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/text_primary_dark</item>
+    </style>
+
+    <style name="Widget.App.TextView.Secondary" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/text_secondary_dark</item>
+    </style>
+</resources>

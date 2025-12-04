@@ -1,0 +1,172 @@
+<resources>
+    <string name="app_name">Power Plant Analyser</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="nav_settings">Settings</string>
+    <string name="nav_project">Project</string>
+    <string name="nav_analysis">Analysis</string>
+    <string name="nav_weather">Weather</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="station_settings">Station Settings</string>
+    <string name="battery_settings">Battery Settings</string>
+    <string name="performance_settings">Performance Settings</string>
+    <string name="api_settings">Solarman API Settings</string>
+    
+    <!-- Station Settings -->
+    <string name="inverter_power_kw">Inverter Power (kW)</string>
+    <string name="panel_power_w">Panel Power (W)</string>
+    <string name="panel_count">Panel Count</string>
+    <string name="panel_efficiency">Panel Efficiency</string>
+    <string name="tilt_deg">Tilt (degrees)</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    
+    <!-- Battery Settings -->
+    <string name="count">Count</string>
+    <string name="type">Type</string>
+    <string name="roundtrip_efficiency">Roundtrip Efficiency</string>
+    <string name="soc_min_pct">Min SOC (%)</string>
+    <string name="soc_max_pct">Max SOC (%)</string>
+    <string name="night_use_grid">Use Grid at Night</string>
+    <string name="allow_grid_charging">Allow Grid Charging</string>
+    
+    <!-- Performance Settings -->
+    <string name="performance_ratio_avg">Avg Performance Ratio</string>
+    <string name="temperature_coeff">Temperature Coefficient</string>
+    <string name="reference_temp">Reference Temperature (°C)</string>
+    
+    <!-- API Settings -->
+    <string name="base_url">Base URL</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="app_id">App ID</string>
+    <string name="app_secret">App Secret</string>
+    <string name="timeout">Timeout (seconds)</string>
+    <string name="device_id">Device ID</string>
+    <string name="device_sn">Device SN</string>
+    
+    <!-- Buttons -->
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
+    <string name="clear_station_data">Clear Station Data</string>
+    <string name="clear_user_data">Clear User Data</string>
+    <string name="clear_all_data">Clear All Data</string>
+    <string name="load_test_config">Load Test Config</string>
+    <string name="refresh">Refresh</string>
+    <string name="forecast">Forecast</string>
+    <string name="analyse">Analyse</string>
+    
+    <!-- Messages -->
+    <string name="no_data_saved">No station or user data saved.</string>
+    <string name="no_weather_data">No weather data available.</string>
+    <string name="ar_placeholder">AR design module coming soon.</string>
+    <string name="station_analysis_placeholder">Station analysis coming soon.</string>
+    <string name="battery_analysis_placeholder">Battery analysis coming soon.</string>
+    <string name="last_updated">Last updated: %1$s</string>
+    
+    <!-- Analysis Tabs -->
+    <string name="tab_current_data">Current</string>
+    <string name="tab_station">Station</string>
+    <string name="tab_battery">Battery</string>
+    <string name="tab_forecast">Forecast</string>
+    
+    <!-- Weather -->
+    <string name="temperature">Temperature</string>
+    <string name="cloud_cover">Cloud Cover</string>
+    <string name="shortwave_radiation">Shortwave Radiation</string>
+    <string name="wind_speed">Wind Speed</string>
+    
+    <!-- Station Analysis -->
+    <string name="fetch_data">Fetch data</string>
+    <string name="weather">Weather</string>
+    <string name="station">Station</string>
+    
+    <!-- Project Screen -->
+    <string name="components">Components</string>
+    <string name="inverter">Inverter</string>
+    <string name="battery">Battery</string>
+    <string name="bms">BMS</string>
+    <string name="configs">Configs</string>
+    <string name="config_name">Config Name</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="cancel">Cancel</string>
+    <string name="start">Start</string>
+    <string name="name">Name</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
+    <string name="depth">Depth</string>
+    <string name="add_item">Add Item</string>
+    <string name="name_label">Name:</string>
+    <string name="dimensions_format">WxHxD:</string>
+    <string name="error_name_exists">Item with this name already exists</string>
+    <string name="error_name_empty">Name cannot be empty</string>
+    <string name="error_name_too_long">Name must be 1-30 characters</string>
+    <string name="error_invalid_dimensions">Width, Height, and Depth must be greater than 0</string>
+    <string name="dimensions_helper_text">mm (200-3000)</string>
+    <string name="error_dimension_too_small">Dimension must be at least 200 mm</string>
+    <string name="error_dimension_too_large">Dimension must not exceed 3000 mm</string>
+    <string name="power_kw">Power (kW)</string>
+    <string name="power_kw_helper">1.0-100.0</string>
+    <string name="capacity_kwh_helper">1.0-100.0</string>
+    <string name="error_power_kw_invalid">Power must be between 1.0 and 100.0 kW</string>
+    <string name="error_capacity_kwh_invalid">Capacity must be between 1.0 and 100.0 kWh</string>
+    
+    <!-- Config Dialog -->
+    <string name="step_1_select_inverters">Step 1: Select Inverters</string>
+    <string name="step_1_description">Select at least one inverter. First selected will be Master, others will be Slaves.</string>
+    <string name="step_2_select_batteries">Step 2: Select Batteries and Form Towers</string>
+    <string name="step_2_description">Select battery model and configure towers.</string>
+    <string name="step_3_select_bms">Step 3: Select BMS</string>
+    <string name="battery_model">Battery Model</string>
+    <string name="total_batteries">Total Batteries</string>
+    <string name="towers_count">Towers Count</string>
+    <string name="batteries_per_tower">Batteries per Tower</string>
+    <string name="batteries_count">Batteries Count</string>
+    <string name="bms_model">BMS Model</string>
+    <string name="bms_placement">BMS Placement</string>
+    <string name="without_tower_standalone">Without tower (standalone)</string>
+    <string name="attach_to_tower">Attach to tower #%1$d</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="error_select_at_least_one_inverter">Please select at least one inverter</string>
+    <string name="error_select_battery_model">Please select battery model</string>
+    <string name="error_invalid_total_batteries">Total batteries must be at least 1</string>
+    <string name="error_invalid_towers_count">Towers count must be between 1 and total batteries</string>
+    <string name="error_tower_batteries_sum">Sum of batteries in towers must equal total batteries</string>
+    <string name="error_select_bms">Please select BMS model</string>
+    <string name="tower">Tower</string>
+    <string name="close">Close</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="inverters">Inverters</string>
+    <string name="batteries_towers">Batteries / Towers</string>
+    <string name="none">None</string>
+    <string name="select_battery_models">Select Battery Models</string>
+    <string name="add_more_batteries_later">Add more battery types later</string>
+    <string name="add_more_bms_later">Add more BMS later</string>
+    <string name="battery_config">Battery: %1$s</string>
+    <string name="tower_number">Tower #</string>
+    <string name="select_bms_models">Select BMS Models</string>
+    <string name="error_select_at_least_one_battery">Please select at least one battery model</string>
+    <string name="error_select_at_least_one_bms">Please select at least one BMS</string>
+    <string name="error_too_many_bms">Number of BMS cannot exceed number of towers</string>
+    <string name="error_bms_duplicate_tower">Each tower can have only one BMS attached</string>
+    <string name="capacity_kwh">Capacity (kWh)</string>
+    
+    <!-- AR Design -->
+    <string name="select_config">Select Config</string>
+    <string name="no_configs_available">No configs available</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="discard">Discard</string>
+    <string name="ruler">Ruler</string>
+    <string name="add_item_ar">Add</string>
+    <string name="distance_meters">%.2f m</string>
+    <string name="video_saved">Video saved to gallery</string>
+    <string name="error_saving_video">Error saving video</string>
+    <string name="error_arcore_not_available">ARCore is not available on this device</string>
+    <string name="error_camera_permission">Camera permission is required</string>
+    <string name="stop">Stop</string>
+</resources>

@@ -1,0 +1,8 @@
+[
+  "soc_clean",
+  "battery_power_kw",
+  "batt_temp_c",
+  "pv_power_kw",
+  "grid_power_kw",
+  "load_power_kw"
+]

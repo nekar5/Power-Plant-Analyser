@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Power Plant Theme Colors -->
+    <color name="primary">#FF1E88E5</color>
+    <color name="primary_dark">#FF0D47A1</color>
+    <color name="primary_variant">#FF42A5F5</color>
+    <color name="secondary">#FF26A69A</color>
+    <color name="secondary_variant">#FF00897B</color>
+    
+    <!-- Accent colors -->
+    <color name="accent_green">#FF4CAF50</color>
+    <color name="accent_orange">#FFFF9800</color>
+    <color name="accent_red">#FFF44336</color>
+    <color name="accent_yellow">#FFD700</color>
+    
+    <!-- Chart colors -->
+    <color name="chart_blue">#FF2196F3</color>
+    <color name="chart_green">#FF4CAF50</color>
+    <color name="chart_orange">#FFFF9800</color>
+    <color name="chart_red">#FFF44336</color>
+    <color name="chart_purple">#FF9C27B0</color>
+    
+    <!-- Background colors -->
+    <color name="background_dark">#FF121212</color>
+    <color name="surface_dark">#FF1E1E1E</color>
+    <color name="card_dark">#FF242424</color>
+    
+    <!-- Text colors -->
+    <color name="text_primary_dark">#FFE0E0E0</color>
+    <color name="text_secondary_dark">#FFB0B0B0</color>
+    <color name="text_hint_dark">#FF8A8A8A</color>
+    <color name="text_input_dark">#FFE0E0E0</color>
+    <color name="input_background_dark">#FF1E1E1E</color>
+    <color name="input_border_dark">#FFCCCCCC</color>
+    
+    <!-- Status colors -->
+    <color name="status_online">#FF4CAF50</color>
+    <color name="status_offline">#FFF44336</color>
+    
+    <!-- Legacy colors (for compatibility) -->
+    <color name="purple_200">#FF1E88E5</color>
+    <color name="purple_500">#FF1976D2</color>
+    <color name="purple_700">#FF0D47A1</color>
+    <color name="teal_200">#FF26A69A</color>
+    <color name="teal_700">#FF00897B</color>
+    
+    <!-- Power Flow Diagram Colors -->
+    <color name="solar_yellow">#FFFFC107</color>
+    <color name="battery_blue">#FF2196F3</color>
+    <color name="battery_green">#FF4CAF50</color>
+    <color name="inverter_gray">#FF757575</color>
+    <color name="grid_green">#FF4CAF50</color>
+    <color name="grid_red">#FFF44336</color>
+    <color name="load_red">#FFF44336</color>
+    <color name="load_blue">#FF2196F3</color>
+</resources>

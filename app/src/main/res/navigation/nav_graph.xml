@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/navigation_settings">
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.masters.ppa.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_project"
+        android:name="com.masters.ppa.ui.project.ProjectFragment"
+        android:label="@string/nav_project"
+        tools:layout="@layout/fragment_project" />
+
+    <fragment
+        android:id="@+id/navigation_analysis"
+        android:name="com.masters.ppa.ui.analysis.AnalysisFragment"
+        android:label="@string/nav_analysis"
+        tools:layout="@layout/fragment_analysis" />
+
+    <fragment
+        android:id="@+id/navigation_weather"
+        android:name="com.masters.ppa.ui.weather.WeatherFragment"
+        android:label="@string/nav_weather"
+        tools:layout="@layout/fragment_weather" />
+
+</navigation>

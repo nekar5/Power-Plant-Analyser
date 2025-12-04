@@ -1,0 +1,28 @@
+{
+  "mean": [
+    71.6879121851901,
+    0.0,
+    22.30460762182977,
+    1.594334529511222,
+    1005.5840304519099,
+    0.0
+  ],
+  "scale": [
+    19.185571495881103,
+    1.0,
+    1.4249655178820995,
+    2.5927269847041168,
+    2407.342178115429,
+    1.0
+  ],
+  "features": [
+    "soc_clean",
+    "battery_power_kw",
+    "batt_temp_c",
+    "pv_power_kw",
+    "grid_power_kw",
+    "load_power_kw"
+  ],
+  "max_timesteps": 290,
+  "note": "Last input channel is is_valid (0/1), not scaled."
+}

@@ -1,0 +1,160 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.masters.ppa'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.masters.ppa"
+        minSdk 28
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Handle duplicate classes
+        multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+            def keystoreProperties = new Properties()
+            if (keystorePropertiesFile.exists()) {
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+            } else if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                keystoreProperties['storeFile'] = MYAPP_RELEASE_STORE_FILE
+                keystoreProperties['storePassword'] = MYAPP_RELEASE_STORE_PASSWORD
+                keystoreProperties['keyAlias'] = MYAPP_RELEASE_KEY_ALIAS
+                keystoreProperties['keyPassword'] = MYAPP_RELEASE_KEY_PASSWORD
+            }
+            
+            if (keystoreProperties['storeFile'] != null) {
+                def keystoreFile = keystoreProperties['storeFile']
+                if (!keystoreFile.startsWith('/')) {
+                    keystoreFile = "app/${keystoreFile}"
+                }
+                storeFile rootProject.file(keystoreFile)
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    
+    packaging {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/license.txt', 'META-INF/NOTICE', 'META-INF/NOTICE.txt', 'META-INF/notice.txt', 'META-INF/ASL2.0']
+            // Pick first occurrence of duplicate classes
+            pickFirsts += ['**/libc++_shared.so', '**/libjsc.so']
+            // Handle duplicate flatbuffers classes - use the one from Sceneform
+            pickFirsts += ['**/com/google/flatbuffers/**']
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        // Force AndroidX instead of old support libraries
+        force 'androidx.core:core:1.13.1'
+        // Exclude litert (Google AI Edge LiteRT) to avoid conflicts with TensorFlow Lite
+        exclude group: 'com.google.ai.edge.litert'
+    }
+}
+
+dependencies {
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    implementation libs.lifecycle.livedata
+    implementation libs.lifecycle.viewmodel
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    implementation libs.constraintlayout.v220
+
+    implementation libs.gson
+    implementation libs.material.v1100
+    implementation libs.okhttp
+    implementation libs.json
+    
+    // Room components
+    implementation libs.room.runtime
+    implementation libs.navigation.runtime
+    annotationProcessor libs.room.compiler
+    
+    // TensorFlow Lite (placeholder)
+    //implementation libs.tensorflow.lite
+    implementation(libs.tensorflow.lite.v2170) {
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert'
+    }
+    implementation(libs.tensorflow.lite.support) {
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert'
+    }
+    implementation(libs.tensorflow.lite.metadata) {
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert'
+    }
+    // Select TF Ops support for battery model (Flex delegate)
+    implementation(libs.tensorflow.lite.select.tf.ops) {
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert'
+    }
+    
+    // ARCore/Sceneform
+    implementation(libs.arcore) {
+        exclude group: 'com.google.ai.edge.litert', module: 'litert'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-api'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support-api'
+    }
+    implementation(libs.sceneform.core) {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-api'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support-api'
+    }
+    implementation(libs.sceneform.ux) {
+        exclude group: 'com.android.support', module: 'support-compat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.flatbuffers', module: 'flatbuffers-java'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-api'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support'
+        exclude group: 'com.google.ai.edge.litert', module: 'litert-support-api'
+    }
+    
+    // CSV Parser
+    implementation libs.opencsv
+    
+    // Charts
+    implementation libs.mpandroidchart
+    
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+}
