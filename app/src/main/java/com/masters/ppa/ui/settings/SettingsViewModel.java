@@ -292,7 +292,7 @@ public class SettingsViewModel extends AndroidViewModel {
         executor.execute(() -> {
             try {
                 // Read JSON from raw resource
-                InputStream is = getApplication().getResources().openRawResource(R.raw.test_station_config);
+                InputStream is = getApplication().getResources().openRawResource(R.raw.test_station_config_template);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 StringBuilder jsonString = new StringBuilder();
                 String line;
